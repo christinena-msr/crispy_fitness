@@ -14,6 +14,9 @@ app.use(express.static("public"));
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fitnessdb", { userNewUrlParser: true });
 
 // place routes here
+app.get("/", (req, res) => {
+    res.send("index.html");
+});
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}!`);
