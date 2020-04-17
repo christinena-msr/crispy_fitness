@@ -24,6 +24,7 @@ module.exports = function(app) {
             });
     });
     
+    // need to add totalDuration calculation field for Workout schema
     app.put("/api/workouts/:id", (req, res) => {
         const id = req.params.id.split("=")[1];
         Workout.find({ _id: id }).then(existingWorkout => {
