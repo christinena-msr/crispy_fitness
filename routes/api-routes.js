@@ -12,11 +12,9 @@ module.exports = function(app) {
     });
     
     app.post("/api/workouts", ({ body }, res) => {
-        const workout = new Workout(body);
-        workout.sumTotalDuration();
-        console.log(body);
-        Workout.create(workout)
+        Workout.create(body)
             .then(dbWorkout => {
+                console.log(dbWorkout);
                 res.json(dbWorkout);
             })
             .catch(err => {
@@ -24,24 +22,20 @@ module.exports = function(app) {
             });
     });
     
-    // need to add totalDuration calculation field for Workout schema
     app.put("/api/workouts/:id", (req, res) => {
-        const id = req.params.id.split("=")[1];
-        Workout.find({ _id: id }).then(existingWorkout => {
-            console.log(existingWorkout);
-            // const newTotal = req.body.duration + existingWorkout.totalDuration;
-            Workout.updateOne(
-                { id: id }, 
-                { $push: { exercises: req.body } }
-            )
-            .then(newWorkout => {
-                console.log(newWorkout);
-                res.json(newWorkout);
-            })
-            .catch(err => {
-                res.status(400).json(err);
-            });
-        })   
+        Workout.updateOne(
+            {   _id: req.params.id  },
+            { 
+                $push: { exercises: req.body },
+                $inc: { totalDuration: req.body.duration }
+            }
+        )
+        .then(newWorkout => {
+            res.json(newWorkout);
+        })
+        .catch(err => {
+            res.status(400).json(err);
+        }); 
     });
     
     app.get("/api/workouts/range", (req, res) => {
