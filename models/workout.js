@@ -7,16 +7,32 @@ const workoutSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    exercises: [], 
-    totalDuration: Number
+    exercises: [
+        {
+            type: {
+                type: String,
+                required: "Please enter a type of exercise"
+            },
+            name: {
+                type: String,
+                required: "Please enter a name for the exercise"
+            },
+            duration: {
+                type: Number, 
+                required: "Please enter a duration for the exercise"
+            },
+            weight: Number,
+            sets: Number, 
+            reps: Number,
+            distance: Number
+        }
+    ], 
+    totalDuration: {
+        type: Number,
+        default: 0
+    }
 });
 
-workoutSchema.methods.sumTotalDuration = function() {
-    this.exercises.forEach(exercise => {
-       this.totalDuration += exercise.duration;
-    });
-    return this.totalDuration;
-}
 const Workout = mongoose.model("Workout", workoutSchema);
 
 module.exports = Workout;
