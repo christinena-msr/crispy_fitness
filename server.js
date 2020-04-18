@@ -15,7 +15,6 @@ app.use(express.static("public"));
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
-// place routes here
 require("./routes/html-routes.js")(app);
 require("./routes/api-routes.js")(app);
 
